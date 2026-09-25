@@ -1,0 +1,12 @@
+{
+  "manifest_version": 3,
+  "name": "EVA-01 Job Assistant",
+  "version": "1.0.0",
+  "description": "Assistente local para importar vagas visiveis e preencher campos basicos sob comando da usuaria.",
+  "permissions": ["activeTab", "scripting", "storage"],
+  "host_permissions": ["https://www.linkedin.com/*", "http://localhost:3000/*"],
+  "action": {
+    "default_popup": "popup.html",
+    "default_title": "EVA-01"
+  }
+}
