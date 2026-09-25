@@ -1,0 +1,64 @@
+{
+  "name": "Ana Nagila Ferreira de Sousa",
+  "location": "Brasilia, DF, Brasil",
+  "summary": "Profissional com experiencia administrativa e comercial, em transicao para tecnologia, com projetos reais em desenvolvimento web, automacao, IA, QA, operacoes e suporte.",
+  "languages": [
+    {"name":"Portugues","level":"nativo"},
+    {"name":"Ingles","level":"avancado"},
+    {"name":"Frances","level":"intermediario"},
+    {"name":"Espanhol","level":"intermediario"}
+  ],
+  "targetRoles": [
+    "Junior Software Developer",
+    "Junior Full-Stack Developer",
+    "AI Automation",
+    "Technical Operations",
+    "Product Operations",
+    "Implementation Specialist",
+    "Technical Support",
+    "Customer Success",
+    "Junior Solutions Engineer",
+    "Administrative Assistant",
+    "Executive Assistant",
+    "Bilingual Secretary"
+  ],
+  "skills": [
+    "JavaScript",
+    "TypeScript",
+    "React",
+    "Node.js",
+    "Git",
+    "GitHub",
+    "REST API",
+    "QA",
+    "automation",
+    "artificial intelligence",
+    "prompt engineering",
+    "customer service",
+    "sales",
+    "operations",
+    "contracts",
+    "suppliers",
+    "administrative processes",
+    "documents",
+    "scheduling"
+  ],
+  "projects": [
+    {"name":"Venda.AI","description":"CRM e plataforma de vendas com IA, leads, follow-up, agenda, campanhas, receita validada e ROI."},
+    {"name":"Autoonn","description":"Plataforma de automacao e TikTok Growth OS com API Node.js, OAuth, deploy e integracoes."},
+    {"name":"Stylist AI","description":"Plataforma de consultoria de imagem assistida por IA com onboarding, analise, guias e recomendacoes."}
+  ],
+  "experience": [
+    {"role":"Assistente Administrativa","company":"IBAMA","period":"abr/2021 - dez/2025"},
+    {"role":"Gerente Comercial","company":"Bella Plus Atacadista","period":"mai/2014 - dez/2019"},
+    {"role":"Vendedora e Consultora de Imagem","company":"Brasil","period":"2013 - 2014"}
+  ],
+  "preferences": {
+    "remote": true,
+    "hybrid": true,
+    "onsiteBrasilia": true,
+    "international": true,
+    "avoidMandatorySenior": true,
+    "minimumMatch": 55
+  }
+}
