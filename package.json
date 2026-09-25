@@ -2,12 +2,11 @@
   "name": "eva-job-agent",
   "version": "1.0.0",
   "private": true,
-  "description": "EVA-01 Career Agent - local job matching, application tracking and LinkedIn browser assistant",
+  "description": "EVA-01 Career Agent - job matching, application tracking and browser-assisted LinkedIn workflow",
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
     "dev": "node server.js",
-    "linkedin": "node browser-agent/linkedin.js",
     "check": "node scripts/smoke-test.js"
   },
   "engines": {
@@ -15,7 +14,6 @@
   },
   "dependencies": {
     "cors": "^2.8.5",
-    "express": "^4.21.2",
-    "playwright-core": "^1.55.0"
+    "express": "^4.21.2"
   }
 }
