@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>EVA-01 Career Agent</title>
+  <link rel="stylesheet" href="/styles.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div>
+      <span class="eyebrow">EVA-01</span>
+      <h1>Career Agent</h1>
+      <p>Vagas, matching e candidaturas em um só lugar.</p>
+    </div>
+    <div class="actions">
+      <button id="refreshBtn" class="secondary">Atualizar</button>
+      <button id="linkedinBtn">Abrir LinkedIn</button>
+    </div>
+  </header>
+
+  <main>
+    <section class="stats" id="stats"></section>
+
+    <section class="panel profile-panel">
+      <div>
+        <span class="eyebrow">Perfil</span>
+        <h2 id="profileName">Carregando...</h2>
+        <p id="profileSummary"></p>
+      </div>
+      <div id="profileTags" class="tags"></div>
+    </section>
+
+    <section class="grid two">
+      <form id="jobForm" class="panel">
+        <span class="eyebrow">Adicionar vaga</span>
+        <h2>Analisar oportunidade</h2>
+        <label>Cargo<input name="title" required placeholder="Ex.: Implementation Specialist" /></label>
+        <label>Empresa<input name="company" placeholder="Empresa" /></label>
+        <label>Localização<input name="location" placeholder="Remoto / Brasília / outro" /></label>
+        <label>Link<input name="url" type="url" placeholder="https://..." /></label>
+        <label>Descrição<textarea name="description" rows="8" required placeholder="Cole a descrição da vaga"></textarea></label>
+        <button type="submit">Salvar e analisar</button>
+      </form>
+
+      <section class="panel">
+        <div class="section-head">
+          <div>
+            <span class="eyebrow">Fila</span>
+            <h2>Candidaturas</h2>
+          </div>
+        </div>
+        <div id="applications" class="stack"></div>
+      </section>
+    </section>
+
+    <section class="panel">
+      <div class="section-head">
+        <div>
+          <span class="eyebrow">Oportunidades</span>
+          <h2>Vagas encontradas</h2>
+        </div>
+        <div class="legend"><span class="dot good"></span> Match recomendado a partir de 55%</div>
+      </div>
+      <div id="jobs" class="jobs"></div>
+    </section>
+  </main>
+
+  <dialog id="letterDialog">
+    <div class="dialog-head">
+      <h3>Carta de apresentação</h3>
+      <button id="closeLetter" class="icon">×</button>
+    </div>
+    <textarea id="letterText" rows="18"></textarea>
+    <div class="dialog-actions">
+      <button id="copyLetter">Copiar</button>
+    </div>
+  </dialog>
+
+  <script src="/app.js"></script>
+</body>
+</html>
