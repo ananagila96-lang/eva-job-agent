@@ -93,7 +93,6 @@ app.patch('/api/applications/:id', (req, res) => {
   res.json(current[index]);
 });
 
-// Executor local: o dashboard cria tarefas; a extensao do Chrome executa no LinkedIn.
 app.get('/api/agent/status', (_req, res) => {
   const tasks = agentTasks();
   res.json({
@@ -103,6 +102,10 @@ app.get('/api/agent/status', (_req, res) => {
     failed: tasks.filter(t => t.status === 'failed').length,
     last: tasks.slice(-1)[0] || null
   });
+});
+
+app.get('/api/agent/activity', (_req, res) => {
+  res.json(agentTasks().slice(-20).reverse());
 });
 
 app.get('/api/agent/tasks', (_req, res) => {
@@ -123,6 +126,29 @@ app.post('/api/agent/tasks', (req, res) => {
   };
   current.push(task); writeJson('data/agent-tasks.json', current);
   res.status(201).json(task);
+});
+
+app.post('/api/agent/command', (req, res) => {
+  const text = String(req.body?.text || '').trim();
+  const lower = text.toLowerCase();
+  if (!text) return res.status(400).json({ error: 'Comando vazio' });
+
+  let task = null;
+  if (/varr|busc|procur|linkedin|vaga/.test(lower)) {
+    const current = agentTasks();
+    task = {
+      id: id('task'), type: 'scan_jobs', targetUrl: 'https://www.linkedin.com/jobs/',
+      jobId: '', status: 'pending', result: null, command: text,
+      createdAt: new Date().toISOString(), updatedAt: new Date().toISOString()
+    };
+    current.push(task); writeJson('data/agent-tasks.json', current);
+    return res.status(201).json({ message: 'Varredura enviada para o executor. Abra o LinkedIn com a extensão EVA ativa.', task });
+  }
+
+  return res.json({
+    message: 'Entendi o comando, mas nesta versão o executor aceita varredura do LinkedIn e execução de uma vaga específica pelos botões da lista. Vou manter o comando registrado apenas na interface.',
+    task: null
+  });
 });
 
 app.patch('/api/agent/tasks/:id', (req, res) => {
