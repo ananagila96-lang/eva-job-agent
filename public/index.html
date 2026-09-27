@@ -7,89 +7,112 @@
   <link rel="stylesheet" href="/styles.css" />
 </head>
 <body>
-  <header class="topbar">
-    <div>
-      <span class="eyebrow">EVA-01</span>
-      <h1>Career Agent</h1>
-      <p>Vagas, matching e candidaturas em um só lugar.</p>
-    </div>
-    <div class="actions">
-      <button id="refreshBtn" class="secondary">Atualizar</button>
-      <button id="linkedinBtn">Abrir LinkedIn</button>
-    </div>
-  </header>
-
-  <main>
-    <section class="stats" id="stats"></section>
-
-    <section class="panel agent-panel">
-      <div>
-        <span class="eyebrow">Agente executor</span>
-        <h2>EVA está pronta para executar no LinkedIn</h2>
-        <p id="agentStatus">Verificando conexão com a extensão...</p>
+  <div class="app-shell">
+    <aside class="sidebar">
+      <div class="brand">
+        <div class="brand-mark">E</div>
+        <div><strong>EVA-01</strong><span>Career Agent</span></div>
       </div>
-      <div class="agent-actions">
-        <button id="scanLinkedin">Varrer vagas abertas</button>
-        <button id="openLinkedinAgent" class="secondary">Abrir LinkedIn</button>
+      <nav>
+        <button class="nav active" data-target="agentView">Agente</button>
+        <button class="nav" data-target="jobsView">Vagas</button>
+        <button class="nav" data-target="applicationsView">Candidaturas</button>
+        <button class="nav" data-target="profileView">Perfil</button>
+      </nav>
+      <div class="sidebar-foot">
+        <div class="status-dot"></div>
+        <div><strong>Executor local</strong><span id="sideStatus">Verificando...</span></div>
       </div>
-      <div class="agent-note">O agente executa via extensão do Chrome. Ele pode varrer vagas, abrir candidaturas e preencher campos básicos. O envio final fica para sua confirmação.</div>
-    </section>
+    </aside>
 
-    <section class="panel profile-panel">
-      <div>
-        <span class="eyebrow">Perfil</span>
-        <h2 id="profileName">Carregando...</h2>
-        <p id="profileSummary"></p>
-      </div>
-      <div id="profileTags" class="tags"></div>
-    </section>
+    <main class="workspace">
+      <header class="workspace-head">
+        <div>
+          <span class="eyebrow">EVA-01</span>
+          <h1>Central de execução</h1>
+          <p>Você manda. A EVA organiza, varre, prepara e acompanha.</p>
+        </div>
+        <div class="head-actions">
+          <button id="refreshBtn" class="ghost">Atualizar</button>
+          <button id="linkedinBtn">Abrir LinkedIn</button>
+        </div>
+      </header>
 
-    <section class="grid two">
-      <form id="jobForm" class="panel">
-        <span class="eyebrow">Adicionar vaga</span>
-        <h2>Analisar oportunidade</h2>
-        <label>Cargo<input name="title" required placeholder="Ex.: Implementation Specialist" /></label>
-        <label>Empresa<input name="company" placeholder="Empresa" /></label>
-        <label>Localização<input name="location" placeholder="Remoto / Brasília / outro" /></label>
-        <label>Link<input name="url" type="url" placeholder="https://..." /></label>
-        <label>Descrição<textarea name="description" rows="8" required placeholder="Cole a descrição da vaga"></textarea></label>
-        <button type="submit">Salvar e analisar</button>
-      </form>
-
-      <section class="panel">
-        <div class="section-head">
-          <div>
-            <span class="eyebrow">Fila</span>
-            <h2>Candidaturas</h2>
+      <section id="agentView" class="view active">
+        <div class="hero-agent">
+          <div class="orb">EVA</div>
+          <div class="hero-copy">
+            <span class="eyebrow">AGENTE EXECUTOR</span>
+            <h2 id="agentHeadline">Pronta para trabalhar</h2>
+            <p id="agentStatus">Verificando fila e extensão...</p>
           </div>
         </div>
-        <div id="applications" class="stack"></div>
-      </section>
-    </section>
 
-    <section class="panel">
-      <div class="section-head">
-        <div>
-          <span class="eyebrow">Oportunidades</span>
-          <h2>Vagas encontradas</h2>
+        <form id="commandForm" class="command-box">
+          <textarea id="commandInput" rows="3" placeholder="Ex.: varra o LinkedIn e traga vagas compatíveis com meu perfil"></textarea>
+          <div class="command-actions">
+            <span>Comandos em linguagem natural</span>
+            <button type="submit">Executar</button>
+          </div>
+        </form>
+
+        <div class="quick-grid">
+          <button id="scanLinkedin" class="quick-card"><strong>Varrer LinkedIn</strong><span>Importar vagas visíveis</span></button>
+          <button id="openLinkedinAgent" class="quick-card"><strong>Abrir LinkedIn</strong><span>Usar sessão já logada</span></button>
+          <button class="quick-card" data-target="jobsView"><strong>Ver vagas</strong><span>Ranking por compatibilidade</span></button>
+          <button class="quick-card" data-target="applicationsView"><strong>Fila</strong><span>Candidaturas preparadas</span></button>
         </div>
-        <div class="legend"><span class="dot good"></span> Match recomendado a partir de 55%</div>
-      </div>
-      <div id="jobs" class="jobs"></div>
-    </section>
-  </main>
+
+        <div class="grid-2">
+          <section class="panel">
+            <div class="panel-head"><div><span class="eyebrow">ATIVIDADE</span><h3>O que a EVA está fazendo</h3></div></div>
+            <div id="activity" class="activity-list"></div>
+          </section>
+          <section class="panel">
+            <div class="panel-head"><div><span class="eyebrow">RESUMO</span><h3>Hoje</h3></div></div>
+            <div id="stats" class="stats"></div>
+          </section>
+        </div>
+      </section>
+
+      <section id="jobsView" class="view">
+        <div class="view-head"><div><span class="eyebrow">OPORTUNIDADES</span><h2>Vagas</h2></div></div>
+        <div class="grid-2">
+          <form id="jobForm" class="panel form-panel">
+            <h3>Analisar oportunidade</h3>
+            <label>Cargo<input name="title" required placeholder="Ex.: Implementation Specialist" /></label>
+            <label>Empresa<input name="company" placeholder="Empresa" /></label>
+            <label>Localização<input name="location" placeholder="Remoto / Brasília / outro" /></label>
+            <label>Link<input name="url" type="url" placeholder="https://..." /></label>
+            <label>Descrição<textarea name="description" rows="7" required placeholder="Cole a descrição da vaga"></textarea></label>
+            <button type="submit">Salvar e analisar</button>
+          </form>
+          <section class="panel">
+            <div class="panel-head"><div><h3>Ranking</h3><p>Melhores matches primeiro</p></div></div>
+            <div id="jobs" class="jobs"></div>
+          </section>
+        </div>
+      </section>
+
+      <section id="applicationsView" class="view">
+        <div class="view-head"><div><span class="eyebrow">EXECUÇÃO</span><h2>Candidaturas</h2></div></div>
+        <section class="panel"><div id="applications" class="stack"></div></section>
+      </section>
+
+      <section id="profileView" class="view">
+        <div class="view-head"><div><span class="eyebrow">PERFIL</span><h2 id="profileName">Carregando...</h2><p id="profileSummary"></p></div></div>
+        <section class="panel"><div id="profileTags" class="tags"></div></section>
+      </section>
+    </main>
+  </div>
 
   <dialog id="letterDialog">
-    <div class="dialog-head">
-      <h3>Carta de apresentação</h3>
-      <button id="closeLetter" class="icon">×</button>
-    </div>
+    <div class="dialog-head"><h3>Carta de apresentação</h3><button id="closeLetter" class="icon">×</button></div>
     <textarea id="letterText" rows="18"></textarea>
-    <div class="dialog-actions">
-      <button id="copyLetter">Copiar</button>
-    </div>
+    <div class="dialog-actions"><button id="copyLetter">Copiar</button></div>
   </dialog>
 
+  <div id="toast" class="toast"></div>
   <script src="/app.js"></script>
 </body>
 </html>
