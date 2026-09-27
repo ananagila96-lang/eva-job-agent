@@ -18,7 +18,8 @@ function evaScanJobs(){
 
 function evaSetValue(el,value){
   if(!el||!value)return false;
-  const setter=Object.getOwnPropertyDescriptor(el.__proto__,'value')?.set;
+  const proto=Object.getPrototypeOf(el);
+  const setter=proto&&Object.getOwnPropertyDescriptor(proto,'value')?.set;
   if(setter)setter.call(el,value);else el.value=value;
   el.dispatchEvent(new Event('input',{bubbles:true}));
   el.dispatchEvent(new Event('change',{bubbles:true}));
@@ -38,4 +39,68 @@ function evaFillBasics(data){
     if(value&&evaSetValue(el,value))filled++;
   }
   return filled;
+}
+
+function evaTargetMatches(task){
+  if(task.type==='scan_jobs') return location.hostname.includes('linkedin.com') && location.pathname.startsWith('/jobs');
+  if(!task.targetUrl) return true;
+  try{
+    const target=new URL(task.targetUrl);
+    const current=new URL(location.href);
+    const targetId=(target.pathname.match(/\/jobs\/view\/(\d+)/)||[])[1];
+    const currentId=(current.pathname.match(/\/jobs\/view\/(\d+)/)||[])[1];
+    return targetId ? targetId===currentId : current.pathname===target.pathname;
+  }catch{return false;}
+}
+
+async function evaPatchTask(taskId,body){
+  return fetch(`http://localhost:3000/api/agent/tasks/${taskId}`,{
+    method:'PATCH',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)
+  });
+}
+
+async function evaRunTask(task){
+  if(!evaTargetMatches(task))return false;
+  await evaPatchTask(task.id,{status:'running'});
+  try{
+    if(task.type==='scan_jobs'){
+      const found=evaScanJobs();
+      const imported=await fetch('http://localhost:3000/api/jobs/import',{
+        method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(found)
+      }).then(r=>r.json());
+      await evaPatchTask(task.id,{status:'completed',result:{visible:found.length,imported:imported.imported||0}});
+      return true;
+    }
+
+    if(task.type==='prepare_application'){
+      const easyApply=[...document.querySelectorAll('button')].find(b=>/easy apply|candidatura simplificada/i.test((b.innerText||'').trim()));
+      if(easyApply){easyApply.click();await new Promise(r=>setTimeout(r,1200));}
+      const profile=await fetch('http://localhost:3000/api/profile').then(r=>r.json());
+      const stored=await chrome.storage.local.get(['email','phone']);
+      const data={name:profile.name||'',location:profile.location||'',email:stored.email||'',phone:stored.phone||''};
+      const filled=evaFillBasics(data);
+      await evaPatchTask(task.id,{status:'completed',result:{easyApplyClicked:!!easyApply,filled,stoppedBeforeSubmit:true}});
+      return true;
+    }
+  }catch(err){
+    await evaPatchTask(task.id,{status:'failed',result:{error:String(err?.message||err)}});
+    return true;
+  }
+  return false;
+}
+
+async function evaPollAgent(){
+  try{
+    const tasks=await fetch('http://localhost:3000/api/agent/tasks').then(r=>r.json());
+    for(const task of tasks){
+      const handled=await evaRunTask(task);
+      if(handled)break;
+    }
+  }catch{}
+}
+
+if(!globalThis.__evaAgentPolling){
+  globalThis.__evaAgentPolling=true;
+  setTimeout(evaPollAgent,800);
+  setInterval(evaPollAgent,3000);
 }
